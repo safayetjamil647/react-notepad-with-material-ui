@@ -1,7 +1,15 @@
 import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+// const useStyles=makeStyles({
+//   btn:{
+//     fontSize:60,
+//     backgroundColor:'violet'
+//   }
+// })
 export default function Create() {
+  // const classes= useStyles()
   return (
     <Container>
       <Typography
@@ -13,13 +21,14 @@ export default function Create() {
         Create a new note
       </Typography>
       <Button
-      onClick={()=>console.log('hellow')}
       type="submit"
       color="secondary"
       variant="contained"
+      endIcon={<KeyboardArrowRightIcon/>}
       >
           Submit
       </Button>
+      
     </Container>
   );
 }
