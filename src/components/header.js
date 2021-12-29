@@ -1,87 +1,116 @@
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
+import React from 'react'
+import { makeStyles } from '@material-ui/core'
+import Drawer from '@material-ui/core/Drawer'
+import Typography from '@material-ui/core/Typography'
+import { useHistory, useLocation } from 'react-router-dom'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import { AddCircleOutlineOutlined, SubjectOutlined } from '@material-ui/icons'
 
-const useStyles = makeStyles((theme) => ({
-	appBar: {
-		borderBottom: `1px solid ${theme.palette.divider}`,
-	},
-	link: {
-		margin: theme.spacing(1, 1.5),
-	},
-	toolbarTitle: {
-		flexGrow: 1,
-	},
-}));
+const drawerWidth = 240
 
-function Header() {
-	const classes = useStyles();
-	return (
-		<React.Fragment>
-			<CssBaseline />
-			<AppBar
-				position="static"
-				color="default"
-				elevation={0}
-				className={classes.appBar}
-			>
-				<Toolbar className={classes.toolbar}>
-					<Typography
-						variant="h6"
-						color="inherit"
-						noWrap
-						className={classes.toolbarTitle}
-					>
-						<Link
-							component={NavLink}
-							to="/"
-							underline="none"
-							color="textPrimary"
-						>
-							Blog
-						</Link>
-					</Typography>
-					<nav>
-						<Link
-							color="textPrimary"
-							href="#"
-							className={classes.link}
-							component={NavLink}
-							to="/register"
-						>
-							Register
-						</Link>
-					</nav>
-					<Button
-						href="#"
-						color="primary"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						to="/login"
-					>
-						Login
-					</Button>
-					<Button
-						href="#"
-						color="primary"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						to="/logout"
-					>
-						Logout
-					</Button>
-				</Toolbar>
-			</AppBar>
-		</React.Fragment>
-	);
+const useStyles = makeStyles({
+  page: {
+    background: '#f9f9f9',
+    width: '100%',
+  },
+  root: {
+    display: 'flex',
+  },
+  drawer: {
+    width: drawerWidth,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  active: {
+    background: '#f4f4f4'
+  },
+})
+
+export default function Layout({ children }) {
+  const classes = useStyles()
+  const history = useHistory()
+  const location = useLocation()
+
+  const menuItems = [
+    { 
+      text: 'My Notes', 
+      icon: <SubjectOutlined color="secondary" />, 
+      path: '/' 
+    },
+    { 
+      text: 'Create Note', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Labels', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Archive', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Trash', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Share', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Exit', 
+      icon: <AddCircleOutlineOutlined color="secondary" />, 
+      path: '/create' 
+    },
+  ];
+
+  return (
+    <div className={classes.root}>
+      {/* app bar */}
+
+      {/* side drawer */}
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{ paper: classes.drawerPaper }}
+        anchor="left"
+      >
+        <div>
+          <Typography variant="h5" className={classes.title}>
+            Keep Here
+          </Typography>
+        </div>
+
+        {/* links/list section */}
+        <List>
+          {menuItems.map((item) => (
+            <ListItem 
+              button 
+              key={item.text} 
+              onClick={() => history.push(item.path)}
+              className={location.pathname == item.path ? classes.active : null}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+        
+      </Drawer>
+
+      {/* main content */}
+      <div className={classes.page}>
+        { children }
+      </div>
+    </div>
+  )
 }
-
-export default Header;
